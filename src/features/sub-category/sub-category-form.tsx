@@ -12,6 +12,7 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
 import { pathName } from '@/config/dashboard';
 import { useToast } from '@/hooks/use-toast';
@@ -24,7 +25,10 @@ import * as z from 'zod';
 
 const formSchema = z.object({
   name: z.string().min(1, {
-    message: 'Product name must be at least 1 characters.',
+    message: 'SubCategory name must be at least 1 characters.',
+  }),
+  category_id: z.string().min(1, {
+    message: 'Category name must be at least 1 characters.',
   }),
   description: z.string().max(264, {
     message: 'Description must be at most 264 characters.',
@@ -40,6 +44,7 @@ export default function SubCategoryForm({
 }) {
   const defaultValues = {
     name: initialData?.name || '',
+    category_id: initialData?.name || '',
     description: initialData?.description || '',
   };
 
@@ -49,24 +54,27 @@ export default function SubCategoryForm({
 
   const { toast } = useToast();
 
-  // const createCategory = api.category.create.useMutation({
-  //   onSuccess: async () => {
-  //     await utils.category.getAll.invalidate();
-  //     toast({
-  //       title: 'Success',
-  //       description: 'Category created successfully!',
-  //     });
-  //     router.push(pathName.categories);
-  //   },
-  //   onError: (error) => {
-  //     console.error('Error creating category:', error);
-  //     toast({
-  //       title: 'Error',
-  //       description: error.message,
-  //       variant: 'destructive',
-  //     });
-  //   },
-  // });
+  const { data: listCategory, isLoading } = api.category.getAll.useQuery({});
+
+
+  const createSubCategory = api.category.create.useMutation({
+    onSuccess: async () => {
+      await utils.category.getAll.invalidate();
+      toast({
+        title: 'Success',
+        description: 'Sub Category created successfully!',
+      });
+      router.push(pathName.categories);
+    },
+    onError: (error) => {
+      console.error('Error creating sub category:', error);
+      toast({
+        title: 'Error',
+        description: error.message,
+        variant: 'destructive',
+      });
+    },
+  });
 
   // const updateCategory = api.category.update.useMutation({
   //   onSuccess: async () => {
@@ -128,6 +136,31 @@ export default function SubCategoryForm({
                     <FormControl>
                       <Input placeholder="Enter product name" {...field} />
                     </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="category_id"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Category</FormLabel>
+                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue
+                            className='text-gray-500 bg-black'
+                            placeholder="Select a category to display" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {
+                          listCategory?.data.map((cat) => <SelectItem key={cat.id} value={cat.id}>{cat.name}</SelectItem>)
+                        }
+                      </SelectContent>
+                    </Select>
                     <FormMessage />
                   </FormItem>
                 )}

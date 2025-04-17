@@ -9,8 +9,8 @@ export const updateSession = async (request: NextRequest) => {
     });
 
     return response;
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  } catch (error) {
+  } catch (error: any) {
+    console.error('Error updating session:', error.message);
     return NextResponse.next({
       request: {
         headers: request.headers,
