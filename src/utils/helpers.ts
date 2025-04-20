@@ -1,14 +1,16 @@
+import dayjs from 'dayjs'
+
 export const getURL = (path: string = '') => {
   // Check if NEXT_PUBLIC_APP_URL is set and non-empty. Set this to your site URL in production env.
   let url =
     process?.env?.NEXT_PUBLIC_APP_URL &&
-    process.env.NEXT_PUBLIC_APP_URL.trim() !== ''
+      process.env.NEXT_PUBLIC_APP_URL.trim() !== ''
       ? process.env.NEXT_PUBLIC_APP_URL
       : // If not set, check for NEXT_PUBLIC_VERCEL_URL, which is automatically set by Vercel.
       process?.env?.NEXT_PUBLIC_VERCEL_URL &&
         process.env.NEXT_PUBLIC_VERCEL_URL.trim() !== ''
-      ? process.env.NEXT_PUBLIC_VERCEL_URL
-      : // If neither is set, default to localhost for local development.
+        ? process.env.NEXT_PUBLIC_VERCEL_URL
+        : // If neither is set, default to localhost for local development.
         'http://localhost:3000/';
 
   // Trim the URL and remove trailing slash if exists.
@@ -26,6 +28,12 @@ export const toDateTime = (secs: number) => {
   const t = new Date(+0); // Unix epoch start.
   t.setSeconds(secs);
   return t;
+};
+
+export const formatDate = (date: string, option?: { s: boolean }) => {
+  return option?.s
+    ? dayjs(date).format('DD/MM/YYYY HH:mm')
+    : dayjs(date).format('DD/MM/YYYY');
 };
 
 export const calculateTrialEndUnixTimestamp = (

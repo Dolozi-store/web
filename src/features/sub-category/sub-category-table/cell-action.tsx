@@ -24,9 +24,10 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
   const router = useRouter();
   const utils = api.useUtils();
   const { toast } = useToast();
-  const deleteCategory = api.category.delete.useMutation({
-    onSuccess: async () => {
-      await utils.category.getAll.invalidate();
+  const deleteCategory = api.subCategory.delete.useMutation({
+    onSuccess: async (data) => {
+      console.log({ data });
+      await utils.subCategory.getAll.invalidate();
       toast({
         title: 'Success',
         description: 'Sub Category deleted successfully!',
@@ -44,7 +45,15 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
   });
 
   const onConfirm = async () => {
-    deleteCategory.mutate({ id: data.id });
+    try {
+      deleteCategory.mutate({ id: data.id });
+    } catch (error: any) {
+      toast({
+        title: 'Error',
+        description: error.message,
+        variant: 'destructive',
+      });
+    }
   };
 
   return (

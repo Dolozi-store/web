@@ -10,7 +10,8 @@ export const subCategoriesRouter = createTRPCRouter({
       z.object({
         name: z.string().min(1),
         description: z.string().nullable(),
-        slug: z.string().min(1),
+        // slug: z.string().min(1),
+        category_id: z.string().min(1),
       }),
     )
     .mutation(async ({ input, ctx }) => {
@@ -21,7 +22,8 @@ export const subCategoriesRouter = createTRPCRouter({
         .insert({
           created_by: ctx.user.id,
           name: input.name,
-          slug: input.slug,
+          category_id: input.category_id,
+          // slug: input.slug,
           description: input.description,
           created_at: new Date().toISOString(),
           updated_at: new Date().toISOString(),
@@ -45,7 +47,8 @@ export const subCategoriesRouter = createTRPCRouter({
         id: z.string().min(1),
         name: z.string().min(1),
         description: z.string().nullable(),
-        slug: z.string().min(1),
+        // slug: z.string().min(1),
+        category_id: z.string().min(1),
       }),
     )
     .mutation(async ({ input, ctx }) => {
@@ -56,7 +59,8 @@ export const subCategoriesRouter = createTRPCRouter({
         .update({
           name: input.name,
           description: input.description,
-          slug: input.slug,
+          category_id: input.category_id,
+          // slug: input.slug,
           updated_at: new Date().toISOString(),
           updated_by: ctx.user.id,
         })
@@ -124,7 +128,7 @@ export const subCategoriesRouter = createTRPCRouter({
     )
     .query(async ({ input }) => {
       const result = await (await createClient())
-        .from('category')
+        .from('sub_category')
         .select('*')
         .eq('id', input.id)
         .single();
@@ -154,7 +158,7 @@ export const subCategoriesRouter = createTRPCRouter({
     )
     .mutation(async ({ input }) => {
       const result = await (await createClient())
-        .from('category')
+        .from('sub_category')
         .delete()
         .eq('id', input.id);
 

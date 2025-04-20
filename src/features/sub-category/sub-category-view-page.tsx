@@ -1,7 +1,7 @@
 import { notFound } from 'next/navigation';
 import SubCategoryForm from './sub-category-form';
 import { api } from '@/trpc/server';
-import { Category } from '@/types/main';
+import { subCategory } from '@/types/main';
 
 type TSubCategoryViewPageProps = {
   subCategoryId: string;
@@ -10,19 +10,19 @@ type TSubCategoryViewPageProps = {
 export default async function SubCategoryViewPage({
   subCategoryId,
 }: TSubCategoryViewPageProps) {
-  let category = null;
+  let subCategory = null;
   let pageTitle = 'Create New Sub Category';
 
   if (subCategoryId !== 'create') {
-    const data = await api?.category?.getCategoryById({ id: subCategoryId });
+    const data = await api?.subCategory?.getSubCategoryById({ id: subCategoryId });
 
     console.log({ data });
-    category = data as unknown as Category;
-    if (!category) {
+    subCategory = data as unknown as subCategory;
+    if (!subCategory) {
       notFound();
     }
     pageTitle = `Update Sub Category`;
   }
 
-  return <SubCategoryForm initialData={category} pageTitle={pageTitle} />;
+  return <SubCategoryForm initialData={subCategory} pageTitle={pageTitle} />;
 }

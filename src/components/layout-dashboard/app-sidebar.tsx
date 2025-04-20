@@ -29,7 +29,6 @@ import {
 import {
   ChevronRight,
   ChevronsUpDown,
-  GalleryVerticalEnd,
   LogOut,
 } from 'lucide-react';
 import Link from 'next/link';
@@ -38,10 +37,11 @@ import * as React from 'react';
 import { iconComponents, navConfig } from '@/config/dashboard';
 import { createClient } from '@/utils/supabase/client';
 import { User } from '@supabase/supabase-js';
+import Image from 'next/image';
 
 export const company = {
   name: 'Dolozi Store Dashboard',
-  logo: GalleryVerticalEnd,
+  // logo: GalleryVerticalEnd,
   plan: 'Enterprise',
 };
 
@@ -59,8 +59,14 @@ export default function AppSidebar({ user }: { user: User | null }) {
     <Sidebar collapsible="icon">
       <SidebarHeader>
         <div className="flex gap-2 py-2 text-sidebar-accent-foreground">
-          <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
-            <company.logo className="size-4" />
+          <div className="flex size-8 items-center justify-center text-sidebar-primary-foreground">
+            <Image
+              className="dark:invert"
+              src="/logo.svg"
+              alt="logomark"
+              width={32}
+              height={32}
+            />
           </div>
           <div className="grid flex-1 items-center text-left text-sm leading-tight">
             <span className="truncate font-semibold text-lg text-sky-500">
