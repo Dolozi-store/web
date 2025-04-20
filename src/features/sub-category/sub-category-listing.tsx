@@ -1,6 +1,6 @@
 'use client';
 
-import { Category } from '@/types/main';
+import { subCategory } from '@/types/main';
 import { DataTable as SubCategoryTable } from '@/components/ui/table-comp/data-table';
 import { columns } from './sub-category-table/columns';
 import { api } from '@/trpc/react';
@@ -16,22 +16,22 @@ export default function SubCategoryListingPage() {
   const search = queryParams?.get('q');
   const pageLimit = queryParams?.get('limit');
 
-  const { data, isLoading } = api.category.getAll.useQuery({
+  const { data, isLoading } = api.subCategory.getAll.useQuery({
     page: page ? Number(page) : 1,
     limit: pageLimit ? Number(pageLimit) : 10,
     search: search || undefined,
   });
 
-  const categories = data?.data || [];
-  const totalCategories = data?.metadata.total || 0;
+  const subCategories = data?.data || [];
+  const totalSubCategories = data?.metadata.total || 0;
 
   if (isLoading) return <DataTableSkeleton />;
 
   return (
     <SubCategoryTable
       columns={columns}
-      data={categories as unknown as Category[]}
-      totalItems={totalCategories}
+      data={subCategories as unknown as subCategory[]}
+      totalItems={totalSubCategories}
     />
   );
 }

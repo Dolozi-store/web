@@ -20,5 +20,16 @@ export interface Category {
   updated_at: string;
   created_by: string;
   updated_by: string;
-  slug: string;
+  slug?: string;
+}
+
+export interface subCategory {
+  id: string /* primary key */;
+  name: string;
+  category_id: string;
+  description: string | null;
+  created_at: string;
+  updated_at: string;
+  created_by: string;
+  updated_by: string;
 }

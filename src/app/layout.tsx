@@ -6,6 +6,7 @@ import { ThemeProvider } from '@/components/theme-provider';
 import { TRPCReactProvider } from '@/trpc/react';
 import React, { Suspense } from 'react';
 import { NuqsAdapter } from 'nuqs/adapters/next/app';
+import NextTopLoader from 'nextjs-toploader';
 import './globals.css';
 import { Toaster } from '@/components/ui/toaster';
 
@@ -60,7 +61,7 @@ export const metadata: Metadata = {
     creator: '@antoineross',
   },
   icons: {
-    icon: '/favicon.ico',
+    icon: '/logo.svg',
     // shortcut: '/favicon-16x16.png',
     // apple: '/apple-touch-icon.png',
   },
@@ -76,6 +77,7 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body suppressHydrationWarning className={lato.className}>
         <Suspense fallback={null}>
+          <NextTopLoader color="#3B82F6" showSpinner={false} />
           <NuqsAdapter>
             <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
               <TRPCReactProvider>
